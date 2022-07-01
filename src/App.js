@@ -2,6 +2,7 @@ import P from 'prop-types';
 import './App.css';
 import React, { useState, useEffect, useCallback } from 'react';
 
+//salva um componente inteiro na memória
 const Button = React.memo(function Button({ incrementButton }) {
   console.log('renderizando o filho');
   return <button onClick={() => incrementButton(5)}>+</button>;
