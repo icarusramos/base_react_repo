@@ -1,12 +1,11 @@
 import P from 'prop-types';
 import './App.css';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 //salva um componente inteiro na memória
-const Button = React.memo(function Button({ incrementButton }) {
-  console.log('renderizando o filho');
+const Button = ({ incrementButton }) => {
   return <button onClick={() => incrementButton(5)}>+</button>;
-});
+};
 
 Button.propTypes = {
   incrementButton: P.func.isRequired,
@@ -20,45 +19,17 @@ function App() {
     setCounter((c) => c + num);
   }, []);
 
-  console.log('renderizando o pai');
+  const btn = useMemo(() => {
+    return <Button incrementButton={incrementCounter} />;
+  }, [incrementCounter]);
 
   return (
     <div className="App">
       <p>teste</p>
       <h1>Contador: {counter}</h1>
-      <Button incrementButton={incrementCounter} />
+      {btn}
     </div>
   );
 }
-
-// Utilizando Classes e States
-// class App extends Component {
-//   state = {
-//     reverse: true,
-//   };
-
-//   handleClick = () => {
-//     const { reverse } = this.state;
-//     this.setState({
-//       reverse: !reverse,
-//     });
-//   };
-
-//   render() {
-//     const { reverse } = this.state;
-//     const reverseClass = reverse ? 'reverse' : '';
-//     return (
-//       <div className="App">
-//         <header className="App-header">
-//           <img src={logo} className={`App-logo ${reverseClass}`} alt="logo" />
-
-//           <button type="button" onClick={this.handleClick}>
-//             Reverse
-//           </button>
-//         </header>
-//       </div>
-//     );
-//   }
-// }
 
 export default App;
