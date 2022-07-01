@@ -1,33 +1,32 @@
 import P from 'prop-types';
+import { useEffect, useState } from 'react';
 import './App.css';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 //salva um componente inteiro na memória
-const Button = ({ incrementButton }) => {
-  return <button onClick={() => incrementButton(5)}>+</button>;
-};
-
-Button.propTypes = {
-  incrementButton: P.func.isRequired,
-};
-
 // Utilizando Hooks
 function App() {
-  const [counter, setCounter] = useState(0);
+  console.log('pai renderizou');
+  const [posts, setPosts] = useState([]);
 
-  const incrementCounter = useCallback((num) => {
-    setCounter((c) => c + num);
+  useEffect(() => {
+    setTimeout(function () {
+      fetch('https://jsonplaceholder.typicode.com/posts')
+        .then((r) => r.json())
+        .then((r) => setPosts(r));
+    }, 5000);
   }, []);
-
-  const btn = useMemo(() => {
-    return <Button incrementButton={incrementCounter} />;
-  }, [incrementCounter]);
 
   return (
     <div className="App">
-      <p>teste</p>
-      <h1>Contador: {counter}</h1>
-      {btn}
+      {posts.map((post) => {
+        return (
+          <div className="posts" key={post.id}>
+            <h1>{post.title}</h1>
+            <p>{post.body}</p>
+          </div>
+        );
+      })}
+      ;
     </div>
   );
 }
